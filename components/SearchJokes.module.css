@@ -56,6 +56,11 @@
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+.noJokesFound {
+  font-size: 15px;
+  font-weight: 700;
+}
+
 .totalCount {
   font-size: 15px;
   font-weight: bold;
@@ -68,9 +73,4 @@
   color: #0070f3;
   padding: 30px;
   z-index: 100;
-}
-
-.noJokesFound {
-  font-size: 15px;
-  font-weight: 700;
 }

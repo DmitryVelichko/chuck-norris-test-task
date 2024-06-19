@@ -62,7 +62,10 @@ export default function SearchJokes() {
                 <button onClick={handleSearch} className={styles.searchButton}>Поиск</button>
             </div>
             <p className={styles.totalCount}>Всего шуток: {totalJokes}</p>
-            {loading && <div className={styles.spinner}>Loading...</div>}
+            {loading && <div className={styles.suspenseFallback}>
+                <div className={styles.spinner}></div>
+                <p>Loading...</p>
+            </div>}
             <div className={styles.jokesContainer}>
                 {totalJokes === 0 ? <div className={styles.noJokesFound}>Шуток не найдено! </div> : null}
                 {jokes.map(joke => (

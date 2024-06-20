@@ -4,10 +4,14 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styles from './SearchJokes.module.css';
 import { useQuery } from 'react-query';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTotalJokes } from '../features/jokesSlice';
 
 export default function SearchJokes() {
     const [query, setQuery] = useState('');
     const [prevQueries, setPrevQueries] = useState(new Set());
+    const dispatch = useDispatch();
+    const totalJokes = useSelector((state) => state.jokes.totalJokes);
 
 
     const { data, isLoading, isError, refetch } = useQuery(
@@ -17,6 +21,7 @@ export default function SearchJokes() {
             enabled: false,
             onSuccess: (data) => {
                 setPrevQueries(new Set([...prevQueries, query]));
+                dispatch(setTotalJokes(data.total));
             }
         }
     );
@@ -59,7 +64,7 @@ export default function SearchJokes() {
 
                 <button onClick={handleSearch} className={styles.searchButton}>Поиск</button>
             </div>
-            <p className={styles.totalCount}>Всего шуток: {data?.total || 0}</p>
+            <p className={styles.totalCount}>Всего шуток: {totalJokes}</p>
             {isLoading && (<div className={styles.suspenseFallback}>
                 <div className={styles.spinner}></div>
                 <p>Loading...</p>

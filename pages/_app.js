@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 import { Provider } from 'react-redux';
-import { store } from '../store';
+import { store } from '../store/store';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();

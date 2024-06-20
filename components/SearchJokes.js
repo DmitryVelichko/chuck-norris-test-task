@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import styles from './SearchJokes.module.css';
 import { useQuery } from 'react-query';
@@ -12,6 +12,7 @@ export default function SearchJokes() {
     const [prevQueries, setPrevQueries] = useState(new Set());
     const dispatch = useDispatch();
     const totalJokes = useSelector((state) => state.jokes.totalJokes);
+    const inputRef = useRef(null);
 
 
     const { data, isLoading, isError, refetch } = useQuery(
@@ -26,17 +27,25 @@ export default function SearchJokes() {
         }
     );
 
+    useEffect(() => {
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    }, []);
+
 
     function handleSearch() {
 
+       
 
         if (query.length < 4) {
-            alert("Мало символов для запроса! Нужно минимум 4.")
-
+            alert("Мало символов для запроса! Нужно минимум 4.");
+            return;
         }
 
         if (prevQueries.has(query)) {
-            alert(`Запрос "${query}" уже был. Введите новый запрос или обновите страницу.`)
+            alert(`Запрос "${query}" уже был. Введите новый запрос или обновите страницу.`);
+            return;
 
         }
 
@@ -54,6 +63,7 @@ export default function SearchJokes() {
         <div className={styles.container}>
             <div className={styles.smallContainer}>
                 <input
+                    ref={inputRef}
                     type="text"
                     placeholder="Искать шутки..."
                     value={query}

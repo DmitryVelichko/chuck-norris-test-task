@@ -13,6 +13,7 @@ export default function SearchJokes() {
     const dispatch = useDispatch();
     const totalJokes = useSelector((state) => state.jokes.totalJokes);
     const inputRef = useRef(null);
+    const debounceTimeout = useRef(null);
 
 
     const { data, isLoading, isError, refetch } = useQuery(
@@ -33,10 +34,20 @@ export default function SearchJokes() {
         }
     }, []);
 
+    useEffect(() => {
+        if (query.length >= 4 && !prevQueries.has(query)) {
+            if (debounceTimeout.current) {
+                clearTimeout(debounceTimeout.current);
+            }
+
+            debounceTimeout.current = setTimeout(() => {
+                refetch();
+            }, 300);
+        }
+    }, [query]);
+
 
     function handleSearch() {
-
-       
 
         if (query.length < 4) {
             alert("Мало символов для запроса! Нужно минимум 4.");
@@ -71,8 +82,6 @@ export default function SearchJokes() {
                     onKeyDown={handleKeyDown}
                     className={styles.searchInput}
                 />
-
-                <button onClick={handleSearch} className={styles.searchButton}>Поиск</button>
             </div>
             <p className={styles.totalCount}>Всего шуток: {totalJokes}</p>
             {isLoading && (<div className={styles.suspenseFallback}>
